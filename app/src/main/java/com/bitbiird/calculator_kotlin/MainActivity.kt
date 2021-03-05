@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             buttonSub -> onOperationPressed("-")
             buttonMul -> onOperationPressed("x")
             buttonDiv -> onOperationPressed("/")
-            buttonClear -> ""
+            buttonClear -> onClearPressed()
             buttonEqual -> onEqualPressed()
         }
     }
@@ -100,10 +101,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         operation = null
         firstNumber = result.toDouble()
 
-        screen.text = if (result.toString().endsWith(".0")) {
-            result.toString().replace(".0","")
-        } else {
-            "%.2f".format(result)
+        try {
+            screen.text = if (result.toString().endsWith(".0")) {
+                result.toString().replace(".0", "")
+            } else {
+                "%.2f".format(result)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+    }
+
+    private fun onClearPressed() {
+        screen.text = "0"
+        firstNumber = 0.0
+        secondNumber = 0.0
     }
 }
